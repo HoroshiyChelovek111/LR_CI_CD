@@ -9,6 +9,9 @@ class TestCase(unittest.TestCase):
         pass
 
     def test_drive(self):
+        # СНАЧАЛА ЗАПРАВИМ машину!
+        self.car.refuel_car(20)
+        # Теперь можно ехать
         self.car.drive(20)
         self.assertRaises(Exception, lambda: self.car.drive(80000))
 

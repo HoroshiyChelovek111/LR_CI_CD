@@ -1,0 +1,53 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install pytest
+      run: pip install pytest
+      
+    - name: Run unit tests
+      run: |
+        cd src
+        python -m pytest test_class_car.py -v
+        
+    - name: Fail if tests failed
+      if: failure()
+      run: |
+        echo "Unit tests failed! PR cannot be merged."
+        exit 1
+
+  ruff-check:
+    name: Check with Ruff
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install Ruff
+      run: pip install ruff
+      
+    - name: Run Ruff linter
+      run: ruff check src/ --output-format=github
+      
+    - name: Fail if Ruff finds issues
+      if: failure()
+      run: |
+        echo "Ruff found code quality issues! PR cannot be merged."
+        exit 1

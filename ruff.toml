@@ -46,6 +46,7 @@ target-version = "py312"
 # McCabe complexity (`C901`) by default.
 select = ["ALL"]
 ignore = [
+    "TRY002", "TRY003", "EM101", "FIX002",
     "S113", "S501", # requests without timeout and cert check
     "D211", "D212", "D205",
     "COM812", "D203", "ISC001",
